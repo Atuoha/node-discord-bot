@@ -9,17 +9,18 @@ const client = new Client({
 });
 
 client.on("ready", () => {
-  console.log(`Logged in as ${client.user.tag}!`);
+    console.log(`Logged in as ${client.user.tag}!`);
 });
+const PREFIX = "$";
 
 client.on("messageCreate", (message) => {
-  console.log(`[${message.author.username}]: ${message.content}`);
-  if (message.author.bot) {
-    return;
-  }
-
-  if (
-    message.content.toLowerCase() === "hi" ||
+    console.log(`[${message.author.username}]: ${message.content}`);
+    if (message.author.bot) {
+        return;
+    }
+    
+    if (
+        message.content.toLowerCase() === "hi" ||
     message.content.toLowerCase() === "hello" ||
     message.content.toLowerCase() === "hey"
   ) {
@@ -194,17 +195,17 @@ client.on("messageCreate", (message) => {
 });
 
 client.on("guildMemberAdd", (member) => {
-  const channelId = "934348652191838231";
+  const channelId = "ID";
   const welcomeMessage = `Hey <@${member.id}>! Welcome to  Mutant-Age Camel Club! \n See commands list by typing: $listCommands`;
   member.guild.channels.fetch(channelId).then((channel) => {
     channel.send(welcomeMessage);
   });
 });
 
+
 function getRandomNumber(min, max) {
   return Math.floor(Math.random() * (max - min) + min);
 }
-const PREFIX = "$";
 
 // client.on('interactionCreate', async interaction => {
 //   if (!interaction.isCommand()) return;
