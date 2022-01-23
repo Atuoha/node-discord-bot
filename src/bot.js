@@ -1,4 +1,11 @@
-require("dotenv").config();
+
+if(process.env.NODE_ENV !== 'production'){
+    require('dotenv').config()
+}
+const token = process.env.TOKEN
+const id = process.env.ID
+
+
 const { Client, Intents, MessageEmbed } = require("discord.js");
 const client = new Client({
   intents: [
@@ -195,7 +202,7 @@ client.on("messageCreate", (message) => {
 });
 
 client.on("guildMemberAdd", (member) => {
-  const channelId = "ID";
+  const channelId = id;
   const welcomeMessage = `Hey <@${member.id}>! Welcome to  Mutant-Age Camel Club! \n See commands list by typing: $listCommands`;
   member.guild.channels.fetch(channelId).then((channel) => {
     channel.send(welcomeMessage);
@@ -214,4 +221,4 @@ function getRandomNumber(min, max) {
 //   }
 // });
 
-client.login("TOKEN");
+client.login(token);
