@@ -9,18 +9,18 @@ const client = new Client({
 });
 
 client.on("ready", () => {
-    console.log(`Logged in as ${client.user.tag}!`);
+  console.log(`Logged in as ${client.user.tag}!`);
 });
 const PREFIX = "$";
 
 client.on("messageCreate", (message) => {
-    console.log(`[${message.author.username}]: ${message.content}`);
-    if (message.author.bot) {
-        return;
-    }
-    
-    if (
-        message.content.toLowerCase() === "hi" ||
+  console.log(`[${message.author.username}]: ${message.content}`);
+  if (message.author.bot) {
+    return;
+  }
+
+  if (
+    message.content.toLowerCase() === "hi" ||
     message.content.toLowerCase() === "hello" ||
     message.content.toLowerCase() === "hey"
   ) {
@@ -201,7 +201,6 @@ client.on("guildMemberAdd", (member) => {
     channel.send(welcomeMessage);
   });
 });
-
 
 function getRandomNumber(min, max) {
   return Math.floor(Math.random() * (max - min) + min);
