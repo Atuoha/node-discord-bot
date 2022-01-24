@@ -54,7 +54,7 @@ if (sadWords.some((word) => msg.content.includes(word))) {
   }
 
 
-
+// CRYPTO PRICE
   if (message.content.startsWith('!price')) {
     // Get the params
     const [command, ...args] = message.content.split(' ');
@@ -86,6 +86,33 @@ if (sadWords.some((word) => msg.content.includes(word))) {
     }
   }  
 
+
+// CRYPTO NEWS
+if (message.content.startsWith('$news')) {
+    try {
+      const { data } = await axios.get(
+        `https://newsapi.org/v2/everything?q=crypto&apiKey=${process.env.NEWS}&pageSize=1&sortBy=publishedAt`
+      );
+
+      // Destructure useful data from response
+      const {
+        title,
+        source: { name },
+        description,
+        url,
+      } = data.articles[0];
+
+      return message.reply(
+        `Latest news related to crypto:\n
+        Title: ${title}\n
+        Description:${description}\n
+        Source: ${name}\n
+        Link to full article: ${url}`
+      );
+    } catch (err) {
+      return message.reply('There was an error. Please try again later.');
+    }
+  }
 
 
 client.on("messageCreate", (message) => {
@@ -185,7 +212,7 @@ client.on("messageCreate", (message) => {
     }
   }
 
-  if (message.content == "$listCommands") {
+  if (message.content == "$help") {
     const exampleEmbed = new MessageEmbed()
       .setColor("#ffd046")
       .setTitle("Server Commands")
@@ -195,6 +222,7 @@ client.on("messageCreate", (message) => {
       .addFields(
         { name: "`$rules`", value: "Rules and Regulations" },
         { name: "`$about`", value: "About Server" },
+        { name: "`$news`", value: "News pertaining Cryptocurrency" },
         { name: "`$like`", value: "Likes the current message" },
         { name: "`$dislike`", value: "Dislikes the current message" },
         { name: "`$inspire`", value: "Inspirations" },
@@ -285,7 +313,7 @@ client.on("messageCreate", (message) => {
 
 client.on("guildMemberAdd", (member) => {
   const channelId = process.env.ID;
-  const welcomeMessage = `Hey <@${member.id}>! Welcome to Mutant-Age Camel Club! \n See commands list by typing: $listCommands. To price of coins this format: !price bitcoin usd`;
+  const welcomeMessage = `Hey <@${member.id}>! Welcome to Mutant-Age Camel Club! \n See commands list by typing: $help. To price of coins this format: "!price bitcoin usd" | For new use $news`;
   member.guild.channels.fetch(channelId).then((channel) => {
     channel.send(welcomeMessage);
   });
