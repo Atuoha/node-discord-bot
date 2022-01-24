@@ -19,12 +19,35 @@ function getRandomNumber(min, max) {
   return Math.floor(Math.random() * (max - min) + min);
 }
 
+function getQuote() {
+  return fetch("https://zenquotes.io/api/random")
+    .then((res) => {
+      return res.json();
+    })
+    .then((data) => {
+      return data[0]["q"] + " -" + data[0]["a"];
+    });
+}
+
+sadWords = ["sad", "depressed", "unhappy", "angry", "miserable"];
+encouragements = [
+  "Cheer up!",
+  "Hang in there.",
+  "You are a great person",
+];
+
 const PREFIX = "$";
 
 client.on("messageCreate", (message) => {
   console.log(`[${message.author.username}]: ${message.content}`);
   if (message.author.bot) {
     return;
+  }
+
+  if (sadWords.some((word) => msg.content.includes(word))) {
+    const encouragement =
+      encouragements[Math.floor(Math.random() * encouragements.length)];
+    msg.reply(encouragement);
   }
 
   if (
@@ -37,7 +60,7 @@ client.on("messageCreate", (message) => {
     );
   } else {
     message.reply(
-      `Hi ${message.author.username}! This is Mutant-Age Camel Club! We are happy to have you here`
+      `Hello ${message.author.username}! This is Mutant-Age Camel Club! We are happy to have you here`
     );
   }
 
@@ -121,6 +144,7 @@ client.on("messageCreate", (message) => {
         { name: "`$about`", value: "About Server" },
         { name: "`$like`", value: "Likes the current message" },
         { name: "`$dislike`", value: "Dislikes the current message" },
+        { name: "`$inspire`", value: "Inspirations" },
         { name: "`$lucky-number`", value: "Returns a lucky number" }
       );
     message.channel.send({ embeds: [exampleEmbed] });
@@ -128,6 +152,10 @@ client.on("messageCreate", (message) => {
 
   if (message.content == "$like") {
     message.react("👍");
+  }
+
+  if (msg.content === "$inspire") {
+    getQuote().then((quote) => msg.channel.send(quote));
   }
 
   if (message.content == "$rules") {
@@ -204,7 +232,7 @@ client.on("messageCreate", (message) => {
 
 client.on("guildMemberAdd", (member) => {
   const channelId = process.env.ID;
-  const welcomeMessage = `Hey <@${member.id}>! Welcome to  Mutant-Age Camel Club! \n See commands list by typing: $listCommands`;
+  const welcomeMessage = `Hey <@${member.id}>! Welcome to Mutant-Age Camel Club! \n See commands list by typing: $listCommands`;
   member.guild.channels.fetch(channelId).then((channel) => {
     channel.send(welcomeMessage);
   });
