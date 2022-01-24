@@ -29,13 +29,13 @@ function getQuote() {
     });
 }
 
-function fetchPrice(coin){
-    return fetch(`https://min-api.cryptocompare.com/data/price?fsym=${coin}&tsyms=USD`).then((res)=>{
-        return res.json();
-    }).then((data)=>{
-        return `Price: $${data[0]['USD']}`
-    })
-}
+// function fetchPrice(coin){
+//     return fetch(`https://min-api.cryptocompare.com/data/price?fsym=${coin}&tsyms=USD`).then((res)=>{
+//         return res.json();
+//     }).then((data)=>{
+//         return `Price: $${data[0]['USD']}`
+//     })
+// }
 
 sadWords = ["sad", "depressed", "unhappy", "angry", "miserable"];
 encouragements = [
@@ -54,19 +54,53 @@ if (sadWords.some((word) => msg.content.includes(word))) {
   }
 
 
+
+  if (message.content.startsWith('!price')) {
+    // Get the params
+    const [command, ...args] = message.content.split(' ');
+
+    // Check if there are two arguments present
+    if (args.length !== 2) {
+      return message.reply(
+        'You must provide the crypto and the currency to compare with!'
+      );
+    } else {
+      const [coin, vsCurrency] = args;
+      try {
+        // Get crypto price from coingecko API
+        const { data } = await axios.get(
+          `https://api.coingecko.com/api/v3/simple/price?ids=${coin}&vs_currencies=${vsCurrency}`
+        );
+
+        // Check if data exists
+        if (!data[coin][vsCurrency]) throw Error();
+
+        return message.reply(
+          `The current price of 1 ${coin} = ${data[coin][vsCurrency]} ${vsCurrency}`
+        );
+      } catch (err) {
+        return message.reply(
+          'Please check your inputs. For example: !price bitcoin usd'
+        );
+      }
+    }
+  }  
+
+
+
 client.on("messageCreate", (message) => {
   console.log(`[${message.author.username}]: ${message.content}`);
   if (message.author.bot) {
     return;
   }
 
-  if(message.content === 'BTC PRICE'){
-    fetchPrice('BTC').then((price) => message.channel.send(price));
-  }
+//   if(message.content === 'BTC PRICE'){
+//     fetchPrice('BTC').then((price) => message.channel.send(price));
+//   }
 
-  if(message.content === 'ETH PRICE'){
-    fetchPrice('ETH').then((price) => message.channel.send(price));
-  }
+//   if(message.content === 'ETH PRICE'){
+//     fetchPrice('ETH').then((price) => message.channel.send(price));
+//   }
 
   
   if (
@@ -251,7 +285,7 @@ client.on("messageCreate", (message) => {
 
 client.on("guildMemberAdd", (member) => {
   const channelId = process.env.ID;
-  const welcomeMessage = `Hey <@${member.id}>! Welcome to Mutant-Age Camel Club! \n See commands list by typing: $listCommands. To get the price of BTC in USD type "BTC Price" and to get for ETH in USD type "ETH Price"`;
+  const welcomeMessage = `Hey <@${member.id}>! Welcome to Mutant-Age Camel Club! \n See commands list by typing: $listCommands. To price of coins this format: !price bitcoin usd`;
   member.guild.channels.fetch(channelId).then((channel) => {
     channel.send(welcomeMessage);
   });
