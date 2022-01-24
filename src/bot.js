@@ -1,10 +1,6 @@
-
-if(process.env.NODE_ENV !== 'production'){
-    require('dotenv').config()
+if (process.env.NODE_ENV !== "production") {
+  require("dotenv").config();
 }
-const token = process.env.TOKEN
-const id = process.env.ID
-
 
 const { Client, Intents, MessageEmbed } = require("discord.js");
 const client = new Client({
@@ -18,6 +14,11 @@ const client = new Client({
 client.on("ready", () => {
   console.log(`Logged in as ${client.user.tag}!`);
 });
+
+function getRandomNumber(min, max) {
+  return Math.floor(Math.random() * (max - min) + min);
+}
+
 const PREFIX = "$";
 
 client.on("messageCreate", (message) => {
@@ -202,23 +203,11 @@ client.on("messageCreate", (message) => {
 });
 
 client.on("guildMemberAdd", (member) => {
-  const channelId = id;
+  const channelId = process.env.ID;
   const welcomeMessage = `Hey <@${member.id}>! Welcome to  Mutant-Age Camel Club! \n See commands list by typing: $listCommands`;
   member.guild.channels.fetch(channelId).then((channel) => {
     channel.send(welcomeMessage);
   });
 });
 
-function getRandomNumber(min, max) {
-  return Math.floor(Math.random() * (max - min) + min);
-}
-
-// client.on('interactionCreate', async interaction => {
-//   if (!interaction.isCommand()) return;
-
-//   if (interaction.commandName === 'ping') {
-//     await interaction.reply('Pong!');
-//   }
-// });
-
-client.login(token);
+client.login(process.env.TOKEN);
