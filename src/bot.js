@@ -29,6 +29,14 @@ function getQuote() {
     });
 }
 
+function fetchPrice(coin){
+    return fetch(`https://min-api.cryptocompare.com/data/price?fsym=${coin}&tsyms=USD`).then((res)=>{
+        return res.json();
+    }).then((data)=>{
+        return `Price: $${data[0]['USD']}`
+    })
+}
+
 sadWords = ["sad", "depressed", "unhappy", "angry", "miserable"];
 encouragements = [
   "Cheer up!",
@@ -38,18 +46,29 @@ encouragements = [
 
 const PREFIX = "$";
 
+
+if (sadWords.some((word) => msg.content.includes(word))) {
+    const encouragement =
+      encouragements[Math.floor(Math.random() * encouragements.length)];
+    msg.reply(encouragement);
+  }
+
+
 client.on("messageCreate", (message) => {
   console.log(`[${message.author.username}]: ${message.content}`);
   if (message.author.bot) {
     return;
   }
 
-  if (sadWords.some((word) => msg.content.includes(word))) {
-    const encouragement =
-      encouragements[Math.floor(Math.random() * encouragements.length)];
-    msg.reply(encouragement);
+  if(message.content === 'BTC PRICE'){
+    fetchPrice('BTC').then((price) => message.channel.send(price));
   }
 
+  if(message.content === 'ETH PRICE'){
+    fetchPrice('ETH').then((price) => message.channel.send(price));
+  }
+
+  
   if (
     message.content.toLowerCase() === "hi" ||
     message.content.toLowerCase() === "hello" ||
@@ -154,8 +173,8 @@ client.on("messageCreate", (message) => {
     message.react("👍");
   }
 
-  if (msg.content === "$inspire") {
-    getQuote().then((quote) => msg.channel.send(quote));
+  if (message.content === "$inspire") {
+    getQuote().then((quote) => message.channel.send(quote));
   }
 
   if (message.content == "$rules") {
@@ -232,7 +251,7 @@ client.on("messageCreate", (message) => {
 
 client.on("guildMemberAdd", (member) => {
   const channelId = process.env.ID;
-  const welcomeMessage = `Hey <@${member.id}>! Welcome to Mutant-Age Camel Club! \n See commands list by typing: $listCommands`;
+  const welcomeMessage = `Hey <@${member.id}>! Welcome to Mutant-Age Camel Club! \n See commands list by typing: $listCommands. To get the price of BTC in USD type "BTC Price" and to get for ETH in USD type "ETH Price"`;
   member.guild.channels.fetch(channelId).then((channel) => {
     channel.send(welcomeMessage);
   });
