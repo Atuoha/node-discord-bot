@@ -10,6 +10,7 @@ const client = new Client({
     Intents.FLAGS.GUILD_MESSAGES,
   ],
 });
+const axios = require('axios');
 
 client.on("ready", () => {
   console.log(`Logged in as ${client.user.tag}!`);
