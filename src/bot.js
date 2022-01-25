@@ -524,7 +524,7 @@ if (process.env.NODE_ENV !== "production") {
               const  {response}  = await axios.get(encodedURI1);
         
               return message.reply(
-                response.data.cnt[0]["q"] + " -" + response[0]["a"]
+                response[0]["q"] + " -" + response[0]["a"]
               );
             } catch (err) {
               return message.channel.send(
@@ -548,7 +548,7 @@ if (process.env.NODE_ENV !== "production") {
         source: { name },
         description,
         url,
-      } = response.data.cnt.articles[0];
+      } = response.articles[0];
 
       return message.reply(
         `Latest news related to crypto:\n
