@@ -38,11 +38,7 @@ client.on("messageCreate", (message) => {
     message.reply(
       `Hi ${message.author.username}! Welcome to Mutant-Age Camel Club. We happy to have you here with us. `
     );
-  } else {
-    message.reply(
-      `Hi ${message.author.username}! This is Mutant-Age Camel Club! We are happy to have you here`
-    );
-  }
+  } 
 
   if (
     message.content.toLowerCase().includes("hey bot") ||
@@ -213,9 +209,7 @@ client.on("messageCreate", (message) => {
   // CRYPTO NEWS
   if (message.content.startsWith("$news")) {
     message.react("💯");
-    const encodedURI2 = encodeURI(
-      `https://newsapi.org/v2/everything?q=crypto&apiKey=${process.env.NEWS}&pageSize=1&sortBy=publishedAt&language=en`
-    );
+    const encodedURI2 = encodeURI(`https://newsapi.org/v2/everything?q=crypto&apiKey=${process.env.NEWS}&pageSize=1&sortBy=publishedAt&language=en`);
     axios
       .get(encodedURI2)
       .then((response) => {
@@ -229,7 +223,7 @@ client.on("messageCreate", (message) => {
         message.channel.send(
           `Latest news related to crypto:\n
             Title: ${title}\n
-            Description:${description}\n
+            Description: ${description}\n
             Source: ${name}\n
             Link to full article: ${url}`
         );
@@ -260,7 +254,7 @@ client.on("messageCreate", (message) => {
     } else {
       const [coin, vsCurrency] = args;
       // Get crypto price from coingecko API
-      const encodedURI3 = `https://api.coingecko.com/api/v3/simple/price?ids=${coin}&vs_currencies=${vsCurrency}`;
+      const encodedURI3 = encodeURI(`https://api.coingecko.com/api/v3/simple/price?ids=${coin}&vs_currencies=${vsCurrency}`);
        axios
         .get(encodedURI3)
         .then((response) => {
