@@ -518,11 +518,10 @@ if (process.env.NODE_ENV !== "production") {
   // INSPIRE
   if (message.content === "$inspire") {
     message.react("💯");
+    const encodedURI1 = encodeURI(`https://zenquotes.io/api/random`);
 
     try {
-              const  {response}  = await axios.get(
-                `https://zenquotes.io/api/random`
-              );
+              const  {response}  = await axios.get(encodedURI1);
         
               return message.reply(
                 response.data.cnt[0]["q"] + " -" + response[0]["a"]
@@ -539,10 +538,9 @@ if (process.env.NODE_ENV !== "production") {
   // CRYPTO NEWS
   if (message.content.startsWith("$news")) {
     message.react("💯");
+    const encodedURI2 = encodeURI(`https://newsapi.org/v2/everything?q=crypto&apiKey=${process.env.NEWS}&pageSize=1&sortBy=publishedAt&language=en`);
     try {
-      const { response } = await axios.get(
-        `https://newsapi.org/v2/everything?q=crypto&apiKey=${process.env.NEWS}&pageSize=1&sortBy=publishedAt&language=en`
-      );
+      const { response } = await axios.get(encodedURI2);
 
       // Destructure useful data from response
       const {
