@@ -513,6 +513,59 @@ if (process.env.NODE_ENV !== "production") {
         );
       message.channel.send({ embeds: [exampleEmbed] });
     }
+
+
+  // INSPIRE
+  if (message.content === "$inspire") {
+    message.react("💯");
+
+    try {
+              const  {response}  = await axios.get(
+                `https://zenquotes.io/api/random`
+              );
+        
+              return message.reply(
+                response.data.cnt[0]["q"] + " -" + response[0]["a"]
+              );
+            } catch (err) {
+              return message.channel.send(
+                "There was an error. Please try again later."
+              );
+            }
+          }
+
+
+
+  // CRYPTO NEWS
+  if (message.content.startsWith("$news")) {
+    message.react("💯");
+    try {
+      const { response } = await axios.get(
+        `https://newsapi.org/v2/everything?q=crypto&apiKey=${process.env.NEWS}&pageSize=1&sortBy=publishedAt&language=en`
+      );
+
+      // Destructure useful data from response
+      const {
+        title,
+        source: { name },
+        description,
+        url,
+      } = response.data.cnt.articles[0];
+
+      return message.reply(
+        `Latest news related to crypto:\n
+        Title: ${title}\n
+        Description:${description}\n
+        Source: ${name}\n
+        Link to full article: ${url}`
+      );
+    } catch (err) {
+      return message.channel.send(
+        "There was an error. Please try again later."
+      );
+    }
+  }
+  
   
     if (message.content == "$about") {
       message.react("📃");
