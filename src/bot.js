@@ -327,7 +327,7 @@
 if (process.env.NODE_ENV !== "production") {
     require("dotenv").config();
   }
-  
+  const axios = require("axios");
   const { Client, Intents, MessageEmbed } = require("discord.js");
   const client = new Client({
     intents: [
@@ -344,16 +344,11 @@ if (process.env.NODE_ENV !== "production") {
   function getRandomNumber(min, max) {
     return Math.floor(Math.random() * (max - min) + min);
   }
-  function getQuote() {
-  return fetch("https://zenquotes.io/api/random")
-    .then((res) => {
-      d;
-      return res.json();
-    })
-    .then((data) => {
-      return data[0]["q"] + " -" + data[0]["a"];
-    });
-}
+
+
+
+
+
   const PREFIX = "$";
   
   client.on("messageCreate", (message) => {
@@ -520,13 +515,24 @@ if (process.env.NODE_ENV !== "production") {
     }
 
 
-    
   // INSPIRE
   if (message.content === "$inspire") {
     message.react("💯");
-    // getQuote().then((quote) => message.channel.send(quote));
-    message.channel.send("quotes")
-  }  
+
+    try {
+              const  data  = await axios.get(
+                `https://zenquotes.io/api/random`
+              );
+        
+              return message.reply(
+                data[0]["q"] + " -" + data[0]["a"]
+              );
+            } catch (err) {
+              return message.channel.send(
+                "There was an error. Please try again later."
+              );
+            }
+          }
   
   
     if (message.content == "$about") {
