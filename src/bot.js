@@ -524,7 +524,7 @@ if (process.env.NODE_ENV !== "production") {
   // INSPIRE
   if (message.content === "$inspire") {
     message.react("💯");
-    getQuote().then((quote) => message.channel.send(quote));
+    // getQuote().then((quote) => message.channel.send(quote));
   }  
   
   
