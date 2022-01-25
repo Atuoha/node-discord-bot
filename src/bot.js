@@ -520,7 +520,7 @@ if (process.env.NODE_ENV !== "production") {
     message.react("💯");
 
     try {
-              const  data  = await axios.get(
+              const  {data}  = await axios.get(
                 `https://zenquotes.io/api/random`
               );
         
