@@ -10,7 +10,7 @@ const client = new Client({
     Intents.FLAGS.GUILD_MESSAGES,
   ],
 });
-const axios = require('axios');
+const axios = require("axios");
 
 client.on("ready", () => {
   console.log(`Logged in as ${client.user.tag}!`);
@@ -23,6 +23,7 @@ function getRandomNumber(min, max) {
 function getQuote() {
   return fetch("https://zenquotes.io/api/random")
     .then((res) => {
+      d;
       return res.json();
     })
     .then((data) => {
@@ -39,82 +40,9 @@ function getQuote() {
 // }
 
 sadWords = ["sad", "depressed", "unhappy", "angry", "miserable"];
-encouragements = [
-  "Cheer up!",
-  "Hang in there.",
-  "You are a great person",
-];
+encouragements = ["Cheer up!", "Hang in there.", "You are a great person"];
 
 const PREFIX = "$";
-
-
-if (sadWords.some((word) => msg.content.includes(word))) {
-    const encouragement =
-      encouragements[Math.floor(Math.random() * encouragements.length)];
-    msg.reply(encouragement);
-  }
-
-
-// CRYPTO PRICE
-  if (message.content.startsWith('!price')) {
-    // Get the params
-    const [command, ...args] = message.content.split(' ');
-
-    // Check if there are two arguments present
-    if (args.length !== 2) {
-      return message.reply(
-        'You must provide the crypto and the currency to compare with!'
-      );
-    } else {
-      const [coin, vsCurrency] = args;
-      try {
-        // Get crypto price from coingecko API
-        const { data } = await axios.get(
-          `https://api.coingecko.com/api/v3/simple/price?ids=${coin}&vs_currencies=${vsCurrency}`
-        );
-
-        // Check if data exists
-        if (!data[coin][vsCurrency]) throw Error();
-
-        return message.reply(
-          `The current price of 1 ${coin} = ${data[coin][vsCurrency]} ${vsCurrency}`
-        );
-      } catch (err) {
-        return message.reply(
-          'Please check your inputs. For example: !price bitcoin usd'
-        );
-      }
-    }
-  }  
-
-
-// CRYPTO NEWS
-if (message.content.startsWith('$news')) {
-    try {
-      const { data } = await axios.get(
-        `https://newsapi.org/v2/everything?q=crypto&apiKey=${process.env.NEWS}&pageSize=1&sortBy=publishedAt`
-      );
-
-      // Destructure useful data from response
-      const {
-        title,
-        source: { name },
-        description,
-        url,
-      } = data.articles[0];
-
-      return message.reply(
-        `Latest news related to crypto:\n
-        Title: ${title}\n
-        Description:${description}\n
-        Source: ${name}\n
-        Link to full article: ${url}`
-      );
-    } catch (err) {
-      return message.reply('There was an error. Please try again later.');
-    }
-  }
-
 
 client.on("messageCreate", (message) => {
   console.log(`[${message.author.username}]: ${message.content}`);
@@ -122,15 +50,14 @@ client.on("messageCreate", (message) => {
     return;
   }
 
-//   if(message.content === 'BTC PRICE'){
-//     fetchPrice('BTC').then((price) => message.channel.send(price));
-//   }
+  //   if(message.content === 'BTC PRICE'){
+  //     fetchPrice('BTC').then((price) => message.channel.send(price));
+  //   }
 
-//   if(message.content === 'ETH PRICE'){
-//     fetchPrice('ETH').then((price) => message.channel.send(price));
-//   }
+  //   if(message.content === 'ETH PRICE'){
+  //     fetchPrice('ETH').then((price) => message.channel.send(price));
+  //   }
 
-  
   if (
     message.content.toLowerCase() === "hi" ||
     message.content.toLowerCase() === "hello" ||
@@ -145,10 +72,7 @@ client.on("messageCreate", (message) => {
     );
   }
 
-  if (
-    message.content.toLowerCase().includes("hey bot") ||
-    message.content.toLowerCase().includes("general kenobi")
-  ) {
+  if (message.content.toLowerCase().includes("hey bot")) {
     message.channel.send("Hello there!");
   }
 
@@ -213,7 +137,7 @@ client.on("messageCreate", (message) => {
     }
   }
 
-  if (message.content == "$help") {
+  if (message.content == "$commands") {
     const exampleEmbed = new MessageEmbed()
       .setColor("#ffd046")
       .setTitle("Server Commands")
@@ -224,10 +148,10 @@ client.on("messageCreate", (message) => {
         { name: "`$rules`", value: "Rules and Regulations" },
         { name: "`$about`", value: "About Server" },
         { name: "`$news`", value: "News pertaining Cryptocurrency" },
-        { name: "`$like`", value: "Likes the current message" },
-        { name: "`$dislike`", value: "Dislikes the current message" },
         { name: "`$inspire`", value: "Inspirations" },
-        { name: "`$lucky-number`", value: "Returns a lucky number" }
+        { name: "`$lucky-number`", value: "Returns a lucky number" },
+        { name: "`$like`", value: "Likes the current message" },
+        { name: "`$dislike`", value: "Dislikes the current message" }
       );
     message.channel.send({ embeds: [exampleEmbed] });
   }
@@ -236,10 +160,13 @@ client.on("messageCreate", (message) => {
     message.react("👍");
   }
 
+  // INSPIRE
   if (message.content === "$inspire") {
+    message.react("💯");
     getQuote().then((quote) => message.channel.send(quote));
   }
 
+  //   RULES
   if (message.content == "$rules") {
     message.react("💯");
     const exampleEmbed = new MessageEmbed()
@@ -295,26 +222,98 @@ client.on("messageCreate", (message) => {
     message.channel.send({ embeds: [exampleEmbed] });
   }
 
+  //  ABOUT
   if (message.content == "$about") {
     message.react("📃");
     message.channel.send(`WELCOME TO THE MUTANT AGE CAMEL CLUB! 
         MACC is a collection of 10,000 Mutant Camel NFTs—unique digital collectibles Roaming around the Ethereum blockchain. Your Mutant Camel is your membership card. Keep it safe, it grants you membership perks.`);
   }
 
+  //  DISLIKE
   if (message.content == "$dislike") {
     message.react("👎");
   }
 
+  // LUCKY NUMBER
   if (message.content == "$lucky-number") {
     message.react("😍");
     let randomNumber = getRandomNumber(0, 1000);
     message.reply(`Your new lucky number is ${randomNumber}.`);
   }
+
+  // ENCOURAGEMENT
+  if (sadWords.some((word) => message.content.includes(word))) {
+    const encouragement =
+      encouragements[Math.floor(Math.random() * encouragements.length)];
+    message.reply(encouragement);
+  }
+
+  // CRYPTO PRICE
+  if (message.content.startsWith("$price")) {
+    // Get the params
+    const [command, ...args] = message.content.split(" ");
+
+    // Check if there are two arguments present
+    if (args.length !== 2) {
+      return message.reply(
+        "You must provide the crypto and the currency to compare with!"
+      );
+    } else {
+      const [coin, vsCurrency] = args;
+      try {
+        // Get crypto price from coingecko API
+        const { data } = await axios.get(
+          `https://api.coingecko.com/api/v3/simple/price?ids=${coin}&vs_currencies=${vsCurrency}`
+        );
+
+        // Check if data exists
+        if (!data[coin][vsCurrency]) throw Error();
+
+        return message.reply(
+          `The current price of 1 ${coin} = ${data[coin][vsCurrency]} ${vsCurrency}`
+        );
+      } catch (err) {
+        return message.reply(
+          "Please check your inputs. For example: $price bitcoin usd"
+        );
+      }
+    }
+  }
+
+  // CRYPTO NEWS
+  if (message.content.startsWith("$news")) {
+    message.react("💯");
+    try {
+      const { data } = await axios.get(
+        `https://newsapi.org/v2/everything?q=crypto&apiKey=${process.env.NEWS}&pageSize=1&sortBy=publishedAt&language=en`
+      );
+
+      // Destructure useful data from response
+      const {
+        title,
+        source: { name },
+        description,
+        url,
+      } = data.articles[0];
+
+      return message.reply(
+        `Latest news related to crypto:\n
+        Title: ${title}\n
+        Description:${description}\n
+        Source: ${name}\n
+        Link to full article: ${url}`
+      );
+    } catch (err) {
+      return message.channel.send(
+        "There was an error. Please try again later."
+      );
+    }
+  }
 });
 
 client.on("guildMemberAdd", (member) => {
   const channelId = process.env.ID;
-  const welcomeMessage = `Hey <@${member.id}>! Welcome to Mutant-Age Camel Club! \n See commands list by typing: $help. To price of coins this format: "!price bitcoin usd" | For new use $news`;
+  const welcomeMessage = `Hey <@${member.id}>! Welcome to Mutant-Age Camel Club! \n See commands list by typing: $commands. To view price of cryptocurrency use this format: "$price bitcoin usd" | For new use $news`;
   member.guild.channels.fetch(channelId).then((channel) => {
     channel.send(welcomeMessage);
   });
