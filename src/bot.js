@@ -112,7 +112,7 @@ client.on("messageCreate", (message) => {
     }
   }
 
-  if (message.content == "$listCommands") {
+  if (message.content == "$commands") {
     const exampleEmbed = new MessageEmbed()
       .setColor("#ffd046")
       .setTitle("Server Commands")
@@ -254,14 +254,14 @@ client.on("messageCreate", (message) => {
 
     // Check if there are two arguments present
     if (args.length !== 2) {
-      return message.reply(
+       message.reply(
         "You must provide the crypto and the currency to compare with!"
       );
     } else {
       const [coin, vsCurrency] = args;
       // Get crypto price from coingecko API
       const encodedURI3 = `https://api.coingecko.com/api/v3/simple/price?ids=${coin}&vs_currencies=${vsCurrency}`;
-      await axios
+       axios
         .get(encodedURI3)
         .then((response) => {
           if (!data[coin][vsCurrency]) {
