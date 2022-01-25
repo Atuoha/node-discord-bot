@@ -242,39 +242,39 @@ client.on("messageCreate", (message) => {
   }
 
   //   // CRYPTO PRICE
-  if (message.content.startsWith("$price")) {
-    // Get the params
-    const [command, ...args] = message.content.split(" ");
+//   if (message.content.startsWith("$price")) {
+//     // Get the params
+//     const [command, ...args] = message.content.split(" ");
 
-    // Check if there are two arguments present
-    if (args.length !== 2) {
-       message.reply(
-        "You must provide the crypto and the currency to compare with!"
-      );
-    } else {
-      const [coin, vsCurrency] = args;
-      // Get crypto price from coingecko API
-      const encodedURI3 = encodeURI(`https://api.coingecko.com/api/v3/simple/price?ids=${coin}&vs_currencies=${vsCurrency}`);
-       axios
-        .get(encodedURI3)
-        .then((response) => {
-          if (!data[coin][vsCurrency]) {
-            message.reply(
-              "Please check your inputs - Data doesn't exist!. For example: $price bitcoin usd "
-            );
-          }
-          message.react("😍");
-          message.reply(
-            `The current price of 1 ${coin} = ${response[coin][vsCurrency]} ${vsCurrency}`
-          );
-        })
-        .catch((err) => {
-          message.reply(
-            "Please check your inputs. For example: $price bitcoin usd"
-          );
-        });
-    }
-  }
+//     // Check if there are two arguments present
+//     if (args.length !== 2) {
+//        message.reply(
+//         "You must provide the crypto and the currency to compare with!"
+//       );
+//     } else {
+//       const [coin, vsCurrency] = args;
+//       // Get crypto price from coingecko API
+//       const encodedURI3 = encodeURI(`https://api.coingecko.com/api/v3/simple/price?ids=${coin}&vs_currencies=${vsCurrency}`);
+//        axios
+//         .get(encodedURI3)
+//         .then((response) => {
+//           if (!data[coin][vsCurrency]) {
+//             message.reply(
+//               "Please check your inputs - Data doesn't exist!. For example: $price bitcoin usd "
+//             );
+//           }
+//           message.react("😍");
+//           message.reply(
+//             `The current price of 1 ${coin} = ${response[coin][vsCurrency]} ${vsCurrency}`
+//           );
+//         })
+//         .catch((err) => {
+//           message.reply(
+//             "Please check your inputs. For example: $price bitcoin usd"
+//           );
+//         });
+//     }
+//   }
 
   if (message.content == "$about") {
     message.react("📃");
