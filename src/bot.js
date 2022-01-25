@@ -545,7 +545,7 @@ if (process.env.NODE_ENV !== "production") {
             source: { name },
             description,
             url,
-          } = response.data.articles[0];
+          } = response.articles[0];
 
           message.reply(
             `Latest news related to crypto:\n
