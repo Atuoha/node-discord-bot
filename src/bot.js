@@ -344,7 +344,16 @@ if (process.env.NODE_ENV !== "production") {
   function getRandomNumber(min, max) {
     return Math.floor(Math.random() * (max - min) + min);
   }
-  
+  function getQuote() {
+  return fetch("https://zenquotes.io/api/random")
+    .then((res) => {
+      d;
+      return res.json();
+    })
+    .then((data) => {
+      return data[0]["q"] + " -" + data[0]["a"];
+    });
+}
   const PREFIX = "$";
   
   client.on("messageCreate", (message) => {
@@ -509,6 +518,15 @@ if (process.env.NODE_ENV !== "production") {
         );
       message.channel.send({ embeds: [exampleEmbed] });
     }
+
+
+    
+  // INSPIRE
+  if (message.content === "$inspire") {
+    message.react("💯");
+    getQuote().then((quote) => message.channel.send(quote));
+  }  
+  
   
     if (message.content == "$about") {
       message.react("📃");
