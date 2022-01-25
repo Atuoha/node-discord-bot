@@ -208,8 +208,7 @@ client.on("messageCreate", (message) => {
 
   // CRYPTO NEWS
   if (message.content.startsWith("$news")) {
-    message.react("💯");
-    const encodedURI2 = encodeURI(`https://newsapi.org/v2/everything?q=crypto&apiKey=612ac56fb8344a48aa7a01cb9aa71cf6&pageSize=1&sortBy=publishedAt&language=en`);
+    const encodedURI2 = encodeURI(`https://newsapi.org/v2/everything?q=crypto&apiKey=${process.env.NEWS}&pageSize=1&sortBy=publishedAt&language=en`);
     axios
       .get(encodedURI2)
       .then((response) => {
@@ -220,6 +219,7 @@ client.on("messageCreate", (message) => {
           url,
         } = response.data.articles[0];
 
+        message.react("💯");
         message.channel.send(
           `Latest news related to crypto:\n
             Title: ${title}\n
