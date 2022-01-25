@@ -439,7 +439,7 @@ if (process.env.NODE_ENV !== "production") {
       }
     }
   
-    if (message.content == "$commands") {
+    if (message.content == "$listCommands") {
       const exampleEmbed = new MessageEmbed()
         .setColor("#ffd046")
         .setTitle("Server Commands")
@@ -514,6 +514,52 @@ if (process.env.NODE_ENV !== "production") {
       message.channel.send({ embeds: [exampleEmbed] });
     }
 
+
+  // INSPIRE
+//   if (message.content === "$inspire") {
+//     message.react("💯");
+//     const encodedURI1 = encodeURI(`https://zenquotes.io/api/random`);
+
+//     try {
+//               const  {response}  = await axios.get(encodedURI1);
+        
+//               return message.reply(
+//                 response.data[0]["q"] + " -" + response.data[0]["a"]
+//               );
+//             } catch (err) {
+//               return message.channel.send(
+//                 "There was an error. Please try again later."
+//               );
+//             }
+//           }
+
+
+
+  // CRYPTO NEWS
+  if (message.content.startsWith("$news")) {
+    message.react("💯");
+    const encodedURI2 = encodeURI(`https://newsapi.org/v2/everything?q=crypto&apiKey=${process.env.NEWS}&pageSize=1&sortBy=publishedAt&language=en`);
+    axios.get(encodedURI2).then((response)=>{
+        const {
+            title,
+            source: { name },
+            description,
+            url,
+          } = response.data.articles[0];
+
+          message.reply(
+            `Latest news related to crypto:\n
+            Title: ${title}\n
+            Description:${description}\n
+            Source: ${name}\n
+            Link to full article: ${url}`
+          );
+    }).catch((err)=>{
+             message.channel.send(
+              "There was an error. Please try again later.")
+    })
+
+}
   
     if (message.content == "$about") {
       message.react("📃");
@@ -534,7 +580,7 @@ if (process.env.NODE_ENV !== "production") {
   
   client.on("guildMemberAdd", (member) => {
     const channelId = process.env.ID;
-    const welcomeMessage = `Hey <@${member.id}>! Welcome to  Mutant-Age Camel Club! \n See commands list by typing: $commands`;
+    const welcomeMessage = `Hey <@${member.id}>! Welcome to  Mutant-Age Camel Club! \n See commands list by typing: $listCommands`;
     member.guild.channels.fetch(channelId).then((channel) => {
       channel.send(welcomeMessage);
     });
