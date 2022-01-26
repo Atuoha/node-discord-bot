@@ -206,6 +206,30 @@ client.on("messageCreate", (message) => {
       });
   }
 
+//   setInterval(()=>{
+//     const encodedURI2 = encodeURI(`https://newsapi.org/v2/everything?q=crypto&apiKey=${process.env.NEWS}&pageSize=1&sortBy=publishedAt&language=en`);
+//     axios
+//       .get(encodedURI2)
+//       .then((response) => {
+//         const {
+//           title,
+//           source: { name },
+//           description,
+//           url,
+//         } = response.data.articles[0];
+
+//         message.react("💯");
+//         message.channel.send(
+//           `Latest news related to crypto:\n
+//             Title: ${title}\n
+//             Description: ${description}\n
+//             Source: ${name}\n
+//             Link to full article: ${url}`
+//         );
+//       })
+      
+//   },)
+
   // CRYPTO NEWS
   if (message.content.startsWith("$news")) {
     const encodedURI2 = encodeURI(`https://newsapi.org/v2/everything?q=crypto&apiKey=${process.env.NEWS}&pageSize=1&sortBy=publishedAt&language=en`);
