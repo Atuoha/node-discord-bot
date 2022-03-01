@@ -36,7 +36,7 @@ client.on("messageCreate", (message) => {
     message.content.toLowerCase() === "hey"
   ) {
     message.reply(
-      `Hi ${message.author.username}! Welcome to Mutant-Age Camel Club. We happy to have you here with us. `
+      `Hi ${message.author.username}! Welcome to AviatorChain Community We happy to have you here with us. `
     );
   } 
 
@@ -142,7 +142,7 @@ client.on("messageCreate", (message) => {
       .setColor("#ffd046")
       .setTitle("Server Rules and Regulations")
       .setDescription(
-        `Welcome to MACC’s Discord Community! We are
+        `Welcome to AVC’s Discord Community! We are
           happy to have you and excited you’re here.. But, before you get to meet our community and other special people like you, there are some important rules you
           are expected to follow as part of our community.`
       )
@@ -302,8 +302,9 @@ client.on("messageCreate", (message) => {
 
   if (message.content == "$about") {
     message.react("📃");
-    message.channel.send(`WELCOME TO THE MUTANT AGE CAMEL CLUB! 
-          MACC is a collection of 10,000 Mutant Camel NFTs—unique digital collectibles Roaming around the Ethereum blockchain. Your Mutant Camel is your membership card. Keep it safe, it grants you membership perks.`);
+    message.channel.send(`WELCOME TO AVIATORCHAIN COMMUNITY! 
+          The AviatorChain (AVC) is a decentralized digital asset with a unique protocol ensuring proper declassification
+of Airline assets using highly renowned Blockchain technology.`);
   }
 
   if (message.content == "$dislike") {
@@ -319,7 +320,7 @@ client.on("messageCreate", (message) => {
 
 client.on("guildMemberAdd", (member) => {
   const channelId = process.env.ID;
-  const welcomeMessage = `Hey <@${member.id}>! Welcome to  Mutant-Age Camel Club! \n See commands list by typing: $commands. To view price of cryptocurrency use this format: "$price bitcoin usd" | For new use $news`;
+  const welcomeMessage = `Hey <@${member.id}>! Welcome to  AviatorChain Community! \n See commands list by typing: $commands. To view price of cryptocurrency use this format: "$price bitcoin usd" | For new use $news`;
   member.guild.channels.fetch(channelId).then((channel) => {
     channel.send(welcomeMessage);
   });
